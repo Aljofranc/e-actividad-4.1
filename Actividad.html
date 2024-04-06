@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reproductor de YouTube</title>
+<style>
+    /* Estilos para el cuerpo de la página */
+    body {
+        background-color: #222; 
+        color: #fff; 
+        font-family: Arial, sans-serif; 
+    }
+    /* Estilos para el contenedor principal */
+    .container {
+        width: 640px; 
+        margin: 0 auto; 
+        padding: 20px; 
+        background-color: #333; 
+        border-radius: 10px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    }
+    /* Estilos para el campo de entrada de texto */
+    input[type="text"] {
+        width: calc(100% - 110px); 
+        padding: 10px; 
+        margin-bottom: 10px; 
+        border: none; 
+        background-color: #444; 
+        color: #fff; 
+        border-radius: 5px; 
+    }
+    /* Estilos para el botón */
+    button {
+        width: 100px; 
+        padding: 10px; 
+        border: none; 
+        background-color: #007bff; 
+        color: #fff; 
+        border-radius: 5px; 
+        cursor: pointer; 
+    }
+    /* Estilos para el botón al pasar el ratón por encima */
+    button:hover {
+        background-color: #0056b3; 
+    }
+    /* Estilos para el reproductor de video */
+    #player {
+        width: 100%; 
+        height: 360px; 
+        margin-top: 20px; 
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Campo de entrada para la URL del video de YouTube -->
+    <input type="text" id="videoURL" placeholder="Inserta la URL del video de YouTube">
+    <!-- Botón para cargar el video -->
+    <button onclick="loadVideo()">Cargar Video</button>
+    <!-- Contenedor donde se mostrará el video de YouTube -->
+    <div id="player"></div>
+</div>
+
+<script>
+    // Función para cargar el video de YouTube
+    function loadVideo() {
+        // Obtiene la URL del video del campo de entrada
+        var videoURL = document.getElementById('videoURL').value;
+        // Extrae el ID del video de la URL proporcionada
+        var videoID = extractVideoID(videoURL);
+        // Verifica si se pudo extraer el ID del video correctamente
+        if (videoID) {
+            // Obtiene el elemento del contenedor del reproductor de video
+            var playerDiv = document.getElementById('player');
+            // Crea un iframe con la URL del video de YouTube y lo inserta en el contenedor
+            playerDiv.innerHTML = '<iframe width="100%" height="360" src="https://www.youtube.com/embed/' + videoID + '" frameborder="0" allowfullscreen></iframe>';
+        } else {
+            // Muestra una alerta si la URL del video no es válida
+            alert('URL de video no válida.');
+        }
+    }
+
+    // Función para extraer el ID del video de YouTube desde la URL
+    function extractVideoID(url) {
+        // Expresión regular para extraer el ID del video de YouTube
+        var regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        // Realiza una coincidencia con la expresión regular en la URL proporcionada
+        var match = url.match(regExp);
+        // Devuelve el ID del video si se encuentra en la URL, de lo contrario, devuelve false
+        return (match && match[1]) ? match[1] : false;
+    }
+</script>
+
+</body>
+</html>
